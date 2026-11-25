@@ -24,7 +24,7 @@ while (cursor + 30 <= archive.length && archive.readUInt32LE(cursor) === 0x04034
   const content = method === 0 ? compressed : method === 8 ? inflateRawSync(compressed) : null;
   if (!content) throw new Error(`Unsupported ZIP compression method ${method} for ${name}`);
   if (!name.startsWith("/") && !name.split("/").includes("..")) {
-    const destination = path.join(root, "src", "assets", name);
+    const destination = path.join(root, name);
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.writeFileSync(destination, content);
     extracted += 1;
@@ -32,4 +32,4 @@ while (cursor + 30 <= archive.length && archive.readUInt32LE(cursor) === 0x04034
   cursor = dataEnd;
 }
 if (!extracted) throw new Error("No Figma assets were extracted.");
-console.log(`Prepared ${extracted} supplied Figma image and vector assets.`);
+console.log(`Prepared ${extracted} supplied Figma source and asset files.`);
