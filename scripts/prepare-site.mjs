@@ -45,6 +45,18 @@ try {
   const stageRule = '.figma-stage {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n}\n\n.figma-1119-3 {\n  position: absolute;\n  left: 50%;\n  top: 0;\n  width: 1440px;\n  height: 9531.1904296875px;\n  transform-origin: top center;';
   if (!css.includes(rootRule)) throw new Error("Could not locate the Figma artboard root CSS rule.");
   css = css.replace(rootRule, stageRule);
+  // Keep Figma text nodes above overlapping image-fill rectangles and decorative artwork.
+  // The Figma export names each node class using its numeric node ID (e.g. 1119:20 -> figma-1119-20).
+  const layerJsonPath = path.join(root, "layer-descriptions virenyuktiwedding.json");
+  if (!fs.existsSync(layerJsonPath)) throw new Error("Figma layer-description JSON is missing.");
+  const designLayers = JSON.parse(fs.readFileSync(layerJsonPath, "utf8"));
+  const textLayerRules = designLayers
+    .filter(layer => layer.type === "TEXT" && layer.text)
+    .map(layer => {
+      const className = `.figma-${layer.id.replace(/:/g, "-")}`;
+      return `${className} { z-index: 9999 !important; background-color: transparent !important; }\n`;
+    }).join("");
+  css += "\\n/* Figma text-over-image stacking correction */\\n" + textLayerRules;
   fs.writeFileSync(path.join(componentsOut, "FigmaExport.css"), css);
 
   const manifest = {
