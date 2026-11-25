@@ -1,10 +1,6 @@
 # Viren & Yukti — Wedding Invitation
 
-React + Vite scaffold for the wedding invitation recreation.
-
-## Complete design source
-
-The complete implementation package includes the original Figma-exported React composition and CSS, all supplied optimized WebP/SVG assets, and the design layer/token references. Extract the companion `viren-yukti-wedding-source.zip` over this repository before running the app; it restores `src/components`, `src/assets`, and `design`.
+This site uses the original Figma-exported 1440 × 9531 px invitation composition and the complete supplied asset ZIP. The export's positioning, typography, decorative frames, photographs, backgrounds and vectors are retained. A proportional artboard wrapper scales the full composition for mobile screens.
 
 ## Run locally
 
@@ -13,6 +9,13 @@ npm install
 npm run dev
 ```
 
-Create a production build with `npm run build`.
+The `prepare:site` step extracts the supplied `WhatsApp-UI-Screens-Community-react-css.zip`, maps every Figma image reference to its local asset, prepares the responsive Figma component, and copies the design layer descriptions and tokens into `design/`.
 
-The page preserves the original 1440px Figma artboard proportions and scales the full composition for narrower viewports.
+## Source structure
+
+- `src/components/FigmaExport.jsx` — original Figma composition with responsive artboard scaling
+- `src/components/FigmaExport.css` — original Figma-exported layout and styling
+- `src/assets/images/` — supplied wedding photography and background artwork
+- `src/assets/vectors/` — supplied SVG decorations
+- `design/` — Figma layer descriptions and design tokens
+- `WhatsApp-UI-Screens-Community-react-css.zip` — original supplied code and assets
