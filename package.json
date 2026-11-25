@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "prepare:site": "node scripts/prepare-site.mjs",
+    "dev": "npm run prepare:site && vite",
+    "build": "npm run prepare:site && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
