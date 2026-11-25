@@ -26,7 +26,7 @@ try {
   let jsx = fs.readFileSync(path.join(temp, "code", "FigmaExport.jsx"), "utf8");
   jsx = jsx.replace('import React from "react";', 'import React, { useEffect, useState } from "react";');
   const start = 'export default function FigmaExport() {\n  return (\n    <main className="figma-1119-3">';
-  const wrappedStart = 'const DESIGN_WIDTH = 1440;\nconst DESIGN_HEIGHT = 9531.1904296875;\n\nexport default function FigmaExport() {\n  const getScale = () => typeof window === "undefined" ? 1 : Math.min(window.innerWidth / DESIGN_WIDTH, 1);\n  const [scale, setScale] = useState(getScale);\n  useEffect(() => {\n    const updateScale = () => setScale(getScale());\n    window.addEventListener("resize", updateScale, { passive: true });\n    return () => window.removeEventListener("resize", updateScale);\n  }, []);\n  return (\n    <div className="figma-stage" style={{ height: `${DESIGN_HEIGHT * scale}px` }}>\n      <main className="figma-1119-3" style={{ transform: `translateX(-50%) scale(${scale})` }}>';
+  const wrappedStart = 'const DESIGN_WIDTH = 1440;\nconst DESIGN_HEIGHT = 9531.1904296875;\n\nexport default function FigmaExport() {\n  const getScale = () => typeof window === "undefined" ? 1 : Math.max(0.01, window.innerWidth / DESIGN_WIDTH);\n  const [scale, setScale] = useState(getScale);\n  useEffect(() => {\n    const updateScale = () => setScale(getScale());\n    window.addEventListener("resize", updateScale, { passive: true });\n    return () => window.removeEventListener("resize", updateScale);\n  }, []);\n  return (\n    <div className="figma-stage" style={{ height: `${DESIGN_HEIGHT * scale}px` }}>\n      <main className="figma-1119-3" style={{ transform: `translateX(-50%) scale(${scale})` }}>';
   if (!jsx.includes(start)) throw new Error("Could not locate the original Figma component entry point.");
   jsx = jsx.replace(start, wrappedStart);
   if (!/<\/main>\s*\);\s*}\s*$/.test(jsx)) throw new Error("Could not locate the original Figma component closing tag.");
@@ -57,6 +57,31 @@ try {
       return `${className} { z-index: 9999 !important; background-color: transparent !important; }\n`;
     }).join("");
   css += "\n/* Figma text-over-image stacking correction */\n" + textLayerRules;
+  // Full-bleed responsive canvas and a viewport-fixed hero atmosphere.
+  const heroBackground = path.join(imagesOut, "image-1119-318.png");
+  if (!fs.existsSync(heroBackground)) throw new Error("The original Figma hero background image-1119-318.png is missing.");
+  css += `
+/* Full-bleed canvas: scale the 1440px Figma artboard to viewport width. */
+html, body, #root { width: 100%; min-width: 0; margin: 0; }
+.figma-stage { width: 100vw !important; max-width: none !important; margin: 0 !important; background: transparent !important; }
+.figma-1119-3 { background: transparent !important; }
+
+/* Keep the original exported hero background fixed while the invitation scrolls. */
+body { position: relative; background: #F6E6CC !important; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("../assets/images/image-1119-318.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+#root { position: relative; z-index: 1; }
+.figma-1119-318 { visibility: hidden !important; }
+`;
   fs.writeFileSync(path.join(componentsOut, "FigmaExport.css"), css);
 
   const manifest = {
