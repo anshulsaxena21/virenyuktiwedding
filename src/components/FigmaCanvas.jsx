@@ -48,7 +48,7 @@ function layerStyle(layer) {
     pointerEvents: "none",
     boxSizing: "border-box",
     overflow: a.clipsContent ? "hidden" : undefined,
-    backgroundColor: solidFill ? parseColor(solidFill) : undefined,
+    backgroundColor: layer.type !== "TEXT" && solidFill ? parseColor(solidFill) : undefined,
     border: stroke ? `${a.strokeWeight || 1}px solid ${parseColor(stroke)}` : undefined,
     borderRadius: typeof a.cornerRadius === "number" ? a.cornerRadius : undefined,
     boxShadow: shadowFromEffects(a.effects),
@@ -60,7 +60,15 @@ function layerStyle(layer) {
     style.display = "flex";
     style.alignItems = "center";
     style.justifyContent = align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start";
+    style.backgroundColor = "transparent";
     style.color = parseColor(solidFill) || "#3B2A20";
+    if (fills.includes("GRADIENT_LINEAR")) {
+      style.backgroundImage = "linear-gradient(90deg, #9c6b1a 0%, #f6dc8a 25%, #c9a13b 50%, #f6dc8a 75%, #9c6b1a 100%)";
+      style.backgroundClip = "text";
+      style.WebkitBackgroundClip = "text";
+      style.color = "transparent";
+      style.WebkitTextFillColor = "transparent";
+    }
     style.fontFamily = t.fontFamily ? `"${t.fontFamily}", serif` : "serif";
     style.fontSize = t.fontSize || 16;
     style.fontWeight = t.fontWeight || 400;
@@ -69,6 +77,9 @@ function layerStyle(layer) {
     style.letterSpacing = t.letterSpacing ? `${t.letterSpacing}px` : undefined;
     style.textAlign = align;
     style.whiteSpace = "pre-wrap";
+    style.padding = 0;
+    style.margin = 0;
+    style.border = 0;
     style.overflow = "visible";
     style.wordBreak = "normal";
     style.textRendering = "geometricPrecision";
