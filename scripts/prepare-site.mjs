@@ -61,10 +61,10 @@ try {
   // The archived Figma export names the full-page image by layer id 1119:5;
   // prefer the exact hero cover layer 1119:17, then the 1119:13 hero image fallback.
   const heroCandidates = [
-    "hero-garden-webp-1119-17.png",
-    "image-1119-13.png",
-    "gradient-image-1119-5.png",
-    "image-1119-318.png"
+    "050-image-1119-318.png",
+    "005-hero-garden-webp-1119-17.png",
+    "004-image-1119-13.png",
+    "001-gradient-image-1119-5.png"
   ];
   const heroBackgroundName = heroCandidates.find(name => fs.existsSync(path.join(imagesOut, name)));
   if (!heroBackgroundName) throw new Error("None of the original Figma hero background assets were found: " + heroCandidates.join(", "));
