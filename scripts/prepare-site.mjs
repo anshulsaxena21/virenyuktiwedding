@@ -58,8 +58,16 @@ try {
     }).join("");
   css += "\n/* Figma text-over-image stacking correction */\n" + textLayerRules;
   // Full-bleed responsive canvas and a viewport-fixed hero atmosphere.
-  const heroBackground = path.join(imagesOut, "image-1119-318.png");
-  if (!fs.existsSync(heroBackground)) throw new Error("The original Figma hero background image-1119-318.png is missing.");
+  // The archived Figma export names the full-page image by layer id 1119:5;
+  // prefer the exact hero cover layer 1119:17, then the 1119:13 hero image fallback.
+  const heroCandidates = [
+    "hero-garden-webp-1119-17.png",
+    "image-1119-13.png",
+    "gradient-image-1119-5.png",
+    "image-1119-318.png"
+  ];
+  const heroBackgroundName = heroCandidates.find(name => fs.existsSync(path.join(imagesOut, name)));
+  if (!heroBackgroundName) throw new Error("None of the original Figma hero background assets were found: " + heroCandidates.join(", "));
   css += `
 /* Full-bleed canvas: scale the 1440px Figma artboard to viewport width. */
 html, body, #root { width: 100%; min-width: 0; margin: 0; }
@@ -74,7 +82,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url("../assets/images/image-1119-318.png");
+  background-image: url("../assets/images/${heroBackgroundName}");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
