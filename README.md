@@ -1,6 +1,8 @@
 # Viren & Yukti — Wedding Invitation
 
-This site uses the original Figma-exported 1440 × 9531 px invitation composition and the complete supplied asset ZIP. The export's positioning, typography, decorative frames, photographs, backgrounds and vectors are retained. A proportional artboard wrapper scales the full composition for mobile screens.
+This site uses the original Figma-exported 1440 × 9531 px invitation composition and the complete supplied asset ZIP.
+
+GitHub Pages publishing source: GitHub Actions (Vite production artifact). The export's positioning, typography, decorative frames, photographs, backgrounds and vectors are retained. A proportional artboard wrapper scales the full composition for mobile screens.
 
 ## Run locally
 
