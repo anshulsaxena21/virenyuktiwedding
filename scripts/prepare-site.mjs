@@ -56,7 +56,7 @@ try {
       const className = `.figma-${layer.id.replace(/:/g, "-")}`;
       return `${className} { z-index: 9999 !important; background-color: transparent !important; }\n`;
     }).join("");
-  css += "\\n/* Figma text-over-image stacking correction */\\n" + textLayerRules;
+  css += "\n/* Figma text-over-image stacking correction */\n" + textLayerRules;
   fs.writeFileSync(path.join(componentsOut, "FigmaExport.css"), css);
 
   const manifest = {
