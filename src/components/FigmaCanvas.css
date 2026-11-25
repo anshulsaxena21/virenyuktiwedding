@@ -1,0 +1,32 @@
+.figma-stage {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #F6E6CC;
+}
+.figma-artboard {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform-origin: top center;
+  overflow: hidden;
+  background: #F6E6CC;
+}
+.figma-layer {
+  display: block;
+}
+.figma-layer > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.figma-text {
+  overflow: visible;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
