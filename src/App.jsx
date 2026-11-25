@@ -1,6 +1,6 @@
 import React from "react";
-import FigmaCanvas from "./components/FigmaCanvas.jsx";
+import FigmaExport from "./components/FigmaExport.jsx";
 
 export default function App() {
-  return <FigmaCanvas />;
+  return <FigmaExport />;
 }
